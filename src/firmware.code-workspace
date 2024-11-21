@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"name": "firmware",
+			"path": "../firmware"
+		},
+		{
+			"name": "include",
+			"path": "../include"
+		},
+		{
+			"name": "src",
+			"path": "."
+		},
+		{
+			"name": "169Z-2024-States-Code",
+			"path": "../../../Documents/GitHub/169Z-2024-States-Code"
+		}
+	],
+	"settings": {}
+}
