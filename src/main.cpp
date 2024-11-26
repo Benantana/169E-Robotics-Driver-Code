@@ -80,12 +80,12 @@ void spinBot(int Turnits)
 }
 void autonomous()
 {
-	PneuVert.set_value(true); //start back of bar, horz wings outs
+	//PneuVert.set_value(true); //start back of bar, horz wings outs
 	pros::delay(500);
 	moveBot(100); // move forward enough so that you can push triball out of alley
 	pros::delay(1000);
 	spinBot(45) // turn 45 degrees here, where triball is "hit" out
-	PneuVert.set_value(false)
+	//PneuVert.set_value(false)
 	pros::delay(1000)
 	moveBot(450);
 	pros::delay(550);
@@ -101,7 +101,7 @@ void prog()
 	pros::delay(1500);
 	moveBot(-850);
 	pros::delay(1500);
-	PneuHoriz.set_value(true);
+	//PneuHoriz.set_value(true);
 	DriveL.move_relative(-10000, 2);
 	DriveR.move_relative(-10000, 2);
 	pros::delay(1000);
@@ -170,17 +170,17 @@ void opcontrol()
 		if (master.get_digital_new_press(DIGITAL_UP))
 		{
 			Horiz = (!Horiz);
-			PneuHoriz.set_value(Horiz);
+			//PneuHoriz.set_value(Horiz);
 		}
 		if (master.get_digital_new_press(DIGITAL_DOWN))
 		{
 			Vert = (!Vert);
-			PneuVert.set_value(Vert);
+			//PneuVert.set_value(Vert);
 		}
 		if (master.get_digital_new_press(DIGITAL_Y))
 		{
 			Hang = (!Hang);
-			PneuHang.set_value(Hang);
+			//PneuHang.set_value(Hang);
 		}
 	}
 }
