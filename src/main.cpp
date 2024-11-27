@@ -35,8 +35,6 @@ void initialize()
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
-
-	Cata.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 /**
@@ -80,33 +78,9 @@ void spinBot(int Turnits)
 }
 void autonomous()
 {
-	//PneuVert.set_value(true); //start back of bar, horz wings outs
-	pros::delay(500);
-	moveBot(100); // move forward enough so that you can push triball out of alley
-	pros::delay(1000);
-	spinBot(45) // turn 45 degrees here, where triball is "hit" out
-	//PneuVert.set_value(false)
-	pros::delay(1000)
-	moveBot(450);
-	pros::delay(550);
-	spinBot(300);
-	pros::delay(500);
-	moveBot(-4000);
 }
 void prog()
 {
-	moveBot(-1150);
-	pros::delay(1500);
-	spinBot(-550);
-	pros::delay(1500);
-	moveBot(-850);
-	pros::delay(1500);
-	//PneuHoriz.set_value(true);
-	DriveL.move_relative(-10000, 2);
-	DriveR.move_relative(-10000, 2);
-	pros::delay(1000);
-	Cata.move(80);
-	pros::delay(1000000000);
 }
 /**
  * moveBot(-1000)
@@ -133,28 +107,18 @@ void prog()
  */
 void opcontrol()
 {
-	bool Horiz = false;
-	bool Vert = false;
-	bool Hang = true 
+	bool Mogo = false;
 
 	// Driving
 	while (true)
 	{
 
-		// Arcade control scheme
-		int dir = master.get_analog(ANALOG_LEFT_Y);	  // Gets amount forward/backward from left joystick
-		int turn = master.get_analog(ANALOG_RIGHT_X); // Gets the turn left/right from right joystick
-		DriveL = -(dir + turn);						  // Sets left motor voltage
-		DriveR = -(dir - turn);						  // Sets right motor voltage
+		// Tank control scheme
+		int RightVol = master.get_analog(ANALOG_RIGHT_Y); // Gets amount forward/backward from left joystick
+		int LeftVol = master.get_analog(ANALOG_LEFT_X);	  // Gets the turn left/right from right joystick
+		DriveL = LeftVol;								  // Sets left motor voltage
+		DriveR = RightVol;								  // Sets right motor voltage
 
-		if (master.get_digital(DIGITAL_B))
-		{
-			Cata.move(127);
-		}
-		else
-		{
-			Cata.brake();
-		}
 		while (master.get_digital(DIGITAL_R2))
 		{
 			Intake.move(127);
@@ -169,18 +133,8 @@ void opcontrol()
 		}
 		if (master.get_digital_new_press(DIGITAL_UP))
 		{
-			Horiz = (!Horiz);
-			//PneuHoriz.set_value(Horiz);
-		}
-		if (master.get_digital_new_press(DIGITAL_DOWN))
-		{
-			Vert = (!Vert);
-			//PneuVert.set_value(Vert);
-		}
-		if (master.get_digital_new_press(DIGITAL_Y))
-		{
-			Hang = (!Hang);
-			//PneuHang.set_value(Hang);
+			Mogo = (!Mogo);
+			MogoPneu.set_value(Mogo);
 		}
 	}
 }
