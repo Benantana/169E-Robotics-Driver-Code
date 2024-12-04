@@ -108,6 +108,9 @@ void prog()
 void opcontrol()
 {
 	bool Mogo = false;
+	bool INtake = false;
+	bool OUTtake = false;
+	bool ChainOn = false;
 
 	// Driving
 	while (true)
@@ -115,21 +118,50 @@ void opcontrol()
 
 		// Tank control scheme
 		int RightVol = master.get_analog(ANALOG_RIGHT_Y); // Gets amount forward/backward from left joystick
-		int LeftVol = master.get_analog(ANALOG_LEFT_X);	  // Gets the turn left/right from right joystick
-		DriveL = LeftVol;								  // Sets left motor voltage
-		DriveR = RightVol;								  // Sets right motor voltage
+		int LeftVol = master.get_analog(ANALOG_LEFT_Y);	  // Gets the turn left/right from right joystick
+		DriveL = -LeftVol;								  // Sets left motor voltage
+		DriveR = -RightVol;								  // Sets right motor voltage
 
-		while (master.get_digital(DIGITAL_R2))
+		if (master.get_digital_new_press(DIGITAL_R2))
 		{
-			Intake.move(127);
+			if (INtake == false)
+			{
+				Intake.move(100);
+				OUTtake = false;
+				INtake = true;
+			}
+			else
+			{
+				Intake.brake();
+				INtake = false;
+			}
 		}
-		while (master.get_digital(DIGITAL_R1))
+		if (master.get_digital_new_press(DIGITAL_R1))
 		{
-			Intake.move(-127);
+			if (OUTtake == false)
+			{
+				Intake.move(-100);
+				INtake = false;
+				OUTtake = true;
+			}
+			else
+			{
+				Intake.brake();
+				OUTtake = false;
+			}
 		}
-		while (master.get_digital(DIGITAL_L1))
+		if (master.get_digital_new_press(DIGITAL_L1))
 		{
-			Intake.brake();
+			if (ChainOn == false)
+			{
+				Chain.move(60);
+				ChainOn = true;
+			}
+			else
+			{
+				Chain.brake();
+				ChainOn = false;
+			}
 		}
 		if (master.get_digital_new_press(DIGITAL_UP))
 		{

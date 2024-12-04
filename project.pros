@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "169ZCloseAuton",
+    "project_name": "169EDriver",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -421,7 +421,7 @@
     },
     "upload_options": {
       "icon": "X",
-      "slot": 2
+      "slot": 1
     }
   }
 }
