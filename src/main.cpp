@@ -66,18 +66,51 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void moveBot(int Units)
+
+void moveBot(double Inches)
 {
-	DriveL.move_relative(Units, 60);
-	DriveR.move_relative(Units, 60);
+	// (convert to degrees (take 36-48 gear ratio into account)/360)* arc formula (3.14*diameter)   This is to make it inches moving forward not random units
+	DriveL.move_relative(((1.2 * Inches) / 360) * 3.14159 * 2.75, 60);
+	DriveR.move_relative(((1.2 * Inches) / 360) * 3.14159 * 2.75, 60);
 }
-void spinBot(int Turnits)
+// This may been to be figured out, I have no clue how much I need to turn. Good luck!
+void spinBot(double Turnits)
 {
 	DriveL.move_relative(Turnits, 60);
 	DriveR.move_relative(-Turnits, 60);
 }
+void turnOnIntake()
+{
+	Intake.move(100);
+}
+void turnOffIntake()
+{
+	Intake.brake();
+}
+void turnOnChain()
+{
+	Chain.move(100);
+}
+void turnOffChain()
+{
+	Chain.brake();
+}
+void turnOnClamp()
+{
+	MogoPneu.set_value(true);
+}
+void turnOffClamp()
+{
+	MogoPneu.set_value(false);
+}
+
+void FlapJack()
+{
+	Chain.move_relative(-50, 100);
+}
 void autonomous()
 {
+	// PUT AUTON HERE FOR EACH CODE AND THEN GO TO PROJECT.PROS TO CHANGE THE PORT FOR EACH AUTON AND NAME. MAKE SURE YOU SAVE AFTER EACH CHANGE AND SAVE A FILE
 }
 void prog()
 {
@@ -119,8 +152,8 @@ void opcontrol()
 		// Tank control scheme
 		int RightVol = master.get_analog(ANALOG_RIGHT_Y); // Gets amount forward/backward from left joystick
 		int LeftVol = master.get_analog(ANALOG_LEFT_Y);	  // Gets the turn left/right from right joystick
-		DriveL = -LeftVol;								  // Sets left motor voltage
-		DriveR = -RightVol;								  // Sets right motor voltage
+		DriveL = LeftVol;								  // Sets left motor voltage
+		DriveR = RightVol;								  // Sets right motor voltage
 
 		if (master.get_digital_new_press(DIGITAL_R2))
 		{
@@ -154,7 +187,7 @@ void opcontrol()
 		{
 			if (ChainOn == false)
 			{
-				Chain.move(60);
+				Chain.move(100);
 				ChainOn = true;
 			}
 			else
@@ -163,7 +196,13 @@ void opcontrol()
 				ChainOn = false;
 			}
 		}
-		if (master.get_digital_new_press(DIGITAL_UP))
+		// Flapjack Button
+		if (master.get_digital_new_press(DIGITAL_B))
+		{
+			FlapJack();
+		}
+
+		if (master.get_digital_new_press(DIGITAL_L2))
 		{
 			Mogo = (!Mogo);
 			MogoPneu.set_value(Mogo);
