@@ -67,8 +67,15 @@ extern "C"
     void disabled(void);
     void competition_initialize(void);
     void opcontrol(void);
-    void moveBot(int Units);
-    void spinBot(int Turnits);
+    void moveBot(double Inches);
+    void spinBot(double Turnits);
+    void turnOnIntake();
+    void turnOffIntake();
+    void turnOnChain();
+    void turnOffChain();
+    void turnOnClamp();
+    void turnOffClamp();
+    void FlapJack();
     void prog();
 #ifdef __cplusplus
 }
