@@ -1,5 +1,6 @@
+#include "api.h"
 #include "main.h"
-#include "../include/pros/misc.h"
+#include "pros/misc.h"
 #include "globals.h"
 #include <chrono>
 #include <thread>
@@ -110,7 +111,26 @@ void FlapJack()
 }
 void autonomous()
 {
-	// PUT AUTON HERE FOR EACH CODE AND THEN GO TO PROJECT.PROS TO CHANGE THE PORT FOR EACH AUTON AND NAME. MAKE SURE YOU SAVE AFTER EACH CHANGE AND SAVE A FILE
+	// Move forward and run intake
+	moveBot(20); // Move forward 20 inches
+	turnOnIntake();
+	pros::delay(1000); // Wait 1 second for intake
+
+	// Turn right (you may need to adjust the Turnits value)
+	spinBot(90);	  // Turn approximately 90 degrees
+	pros::delay(500); // Wait for turn to complete
+
+	// Move backward
+	moveBot(-15); // Move backward 15 inches
+
+	// Activate mogo clamp
+	turnOnClamp();
+	pros::delay(500); // Wait for clamp to engage
+
+	// Run intake again
+	turnOnIntake();
+	pros::delay(1500); // Run intake for 1.5 seconds
+	turnOffIntake();
 }
 void prog()
 {
@@ -148,20 +168,19 @@ void opcontrol()
 	// Driving
 	while (true)
 	{
-
 		// Tank control scheme
-		int RightVol = master.get_analog(ANALOG_RIGHT_Y); // Gets amount forward/backward from left joystick
-		int LeftVol = master.get_analog(ANALOG_LEFT_Y);	  // Gets the turn left/right from right joystick
-		DriveL = LeftVol;								  // Sets left motor voltage
-		DriveR = RightVol;								  // Sets right motor voltage
-
-		if (master.get_digital_new_press(DIGITAL_R2))
+		int RightVol = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y); // Gets amount forward/backward from right joystick
+		int LeftVol = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);	 // Gets the turn left/right from left joystick
+		DriveL = LeftVol;													 // Sets left motor voltage
+		DriveR = RightVol;													 // Sets right motor voltage
+		// Intake control
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2))
 		{
-			if (INtake == false)
+			if (!INtake)
 			{
-				Intake.move(100);
-				OUTtake = false;
+				Intake.move(100); // Forward
 				INtake = true;
+				OUTtake = false;
 			}
 			else
 			{
@@ -169,13 +188,13 @@ void opcontrol()
 				INtake = false;
 			}
 		}
-		if (master.get_digital_new_press(DIGITAL_R1))
+		else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
 		{
-			if (OUTtake == false)
+			if (!OUTtake)
 			{
-				Intake.move(-100);
-				INtake = false;
+				Intake.move(-100); // Reverse
 				OUTtake = true;
+				INtake = false;
 			}
 			else
 			{
@@ -183,7 +202,7 @@ void opcontrol()
 				OUTtake = false;
 			}
 		}
-		if (master.get_digital_new_press(DIGITAL_L1))
+		/*if (master.get_digital_new_press(DIGITAL_L1))
 		{
 			if (ChainOn == false)
 			{
@@ -195,14 +214,14 @@ void opcontrol()
 				Chain.brake();
 				ChainOn = false;
 			}
-		}
+		}*/
 		// Flapjack Button
-		if (master.get_digital_new_press(DIGITAL_B))
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B))
 		{
 			FlapJack();
 		}
 
-		if (master.get_digital_new_press(DIGITAL_L2))
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2))
 		{
 			Mogo = (!Mogo);
 			MogoPneu.set_value(Mogo);
