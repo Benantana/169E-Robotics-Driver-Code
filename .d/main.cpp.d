@@ -1,10 +1,10 @@
-bin/main.cpp.o: src/main.cpp include/main.h include/api.h \
- include/pros/adi.h include/pros/colors.h include/pros/device.h \
- include/pros/distance.h include/pros/error.h include/pros/ext_adi.h \
- include/pros/adi.h include/pros/adi.h include/pros/gps.h \
- include/pros/imu.h include/pros/link.h include/pros/llemu.h \
- include/liblvgl/llemu.h include/liblvgl/lvgl.h \
- include/liblvgl/misc/lv_log.h include/liblvgl/misc/../lv_conf_internal.h \
+bin/main.cpp.o: src/main.cpp include/api.h include/pros/adi.h \
+ include/pros/colors.h include/pros/device.h include/pros/distance.h \
+ include/pros/error.h include/pros/ext_adi.h include/pros/adi.h \
+ include/pros/adi.h include/pros/gps.h include/pros/imu.h \
+ include/pros/link.h include/pros/llemu.h include/liblvgl/llemu.h \
+ include/liblvgl/lvgl.h include/liblvgl/misc/lv_log.h \
+ include/liblvgl/misc/../lv_conf_internal.h \
  include/liblvgl/misc/../lv_conf_kconfig.h \
  include/liblvgl/misc/../lv_conf.h include/liblvgl/misc/lv_types.h \
  include/liblvgl/misc/lv_timer.h \
@@ -197,9 +197,8 @@ bin/main.cpp.o: src/main.cpp include/main.h include/api.h \
  include/pros/motors.hpp include/pros/optical.hpp include/pros/optical.h \
  include/pros/rotation.hpp include/pros/rotation.h include/pros/rtos.hpp \
  include/pros/screen.hpp include/pros/screen.h include/pros/vision.hpp \
- include/pros/vision.h src/../include/pros/misc.h include/globals.h \
+ include/pros/vision.h include/main.h include/api.h include/globals.h \
  include/main.h
-include/main.h:
 include/api.h:
 include/pros/adi.h:
 include/pros/colors.h:
@@ -462,6 +461,7 @@ include/pros/screen.hpp:
 include/pros/screen.h:
 include/pros/vision.hpp:
 include/pros/vision.h:
-src/../include/pros/misc.h:
+include/main.h:
+include/api.h:
 include/globals.h:
 include/main.h:
